@@ -16,9 +16,8 @@ class Post(models.Model):
         self.save()
 
 
-
 class Settings(models.Model):
-    twitter= models.CharField(max_length=200)
+    twitter = models.CharField(max_length=200)
     facebook = models.CharField(max_length=200)
     instagram = models.CharField(max_length=200)
     youtube_play = models.CharField(max_length=200)
