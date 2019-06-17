@@ -9,10 +9,16 @@ class Post(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+    tag = models.CharField(max_length=200, null=True)
 
     def publish(self):
         self.published_date = timezone.now()
         self.save()
 
-    def __str__(self):
-        return self.title
+
+
+class Settings(models.Model):
+    twitter= models.CharField(max_length=200)
+    facebook = models.CharField(max_length=200)
+    instagram = models.CharField(max_length=200)
+    youtube_play = models.CharField(max_length=200)
