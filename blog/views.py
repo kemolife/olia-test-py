@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Post, Settings, Category
+from .models import Post, Settings, Category, Tag, Comment
 from django.utils import timezone
 
 
@@ -21,17 +21,18 @@ def post_list(request):
 
 def blog_single(request, post_id):
     post = Post.objects.get(pk=post_id)
+    comments = Comment.objects.filter(post__lte=post_id)
     print(post)
-    return render(request, 'blog/blog-single.html', {'post': post, 'setting': _get_setting()})
+    return render(request, 'blog/blog-single.html', {'post': post, 'setting': _get_setting(), 'comments': comments})
 
 
 def about(request):
-    return render(request, 'blog/about.html')
+    return render(request, 'blog/about.html', {'setting': _get_setting()})
 
 
 def category(request):
-    return render(request, 'blog/category.html')
+    return render(request, 'blog/category.html', {'setting': _get_setting()})
 
 
 def contact(request):
-    return render(request, 'blog/contact.html')
+    return render(request, 'blog/contact.html', {'setting': _get_setting()})

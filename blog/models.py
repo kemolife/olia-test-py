@@ -5,24 +5,28 @@ from django.utils import timezone
 
 class Category(models.Model):
     title = models.CharField(max_length=200)
-    type = models.CharField(max_length=200)
+
 
     def __str__(self):
         return self.title
 
 
-class TagTravel(models.Model):
+class Tag(models.Model):
     title = models.CharField(max_length=200)
-    type = models.CharField(max_length=200)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
 
     def __str__(self):
         return self.title
+
 
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    tag_travel = models.ForeignKey(TagTravel, on_delete=models.CASCADE, null=True)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
@@ -34,6 +38,16 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField()
+    published_date = models.DateTimeField(blank=True, null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
 
 
 class Settings(models.Model):
